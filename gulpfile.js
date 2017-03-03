@@ -16,6 +16,10 @@ const postcss = require('gulp-postcss');
 const browserSync = require('browser-sync').create();
 const autoprefixer = require('autoprefixer');
 const babel = require('gulp-babel');
+const browserify = require('browserify');
+const babelify = require('babelify');
+const source = require('vinyl-source-stream');
+const gutil = require('gulp-util');
 
 
 /*
@@ -66,22 +70,32 @@ gulp.task('sass', () => {
 });
 
 /*
- * babel converts our ES6-code to ES5-code so we don't have to worry about
- * compability issues. 'gulp-babel' is specific to gulp but does bascially the same
- * thing. But we ALWAYS have to install and supply a 'preset' to babel or else
- * it will not do anything. Here we have the preset 'babel-preset-latest' which 
- * refers to ES6. We have to install this with npm but we don't have to import it
- * at the top, we can supply only the preset name and babel will know where to look
- * for the preset in node_modules.
+ * This us pure arcane witchcraft on how to use modules in the browser with browserify.
+ * Don't blame me if you accidentally summon some beast from below with this code.
  */
-gulp.task('babel', () => {
-    //Grab all the files in ./src/js folder
-    return gulp.src('./src/js/*.js')
-        //Run them through babel with the preset supplied
-        .pipe(babel({
-            presets: ['latest']
-        }))
-        //Pipe to our destination which is the dist folder. You may have to
-        //create this folder manually or it will not work
-        .pipe(gulp.dest('dist/js'));
+gulp.task('babel', function() {
+    //Browserify takes our file and packs it node-style. It collects all imports
+    //and exports and creates a single 'bundle.js'-file that can be read by the browser
+    //Without browserify, the browser can not handle imports and exports. Here we
+    //specify which input-file we will use.
+    browserify({
+        entries: './src/js/main.js',
+        debug: true
+    })
+    //Instead of gulp-babel we will runt babelify which is babel but for browserify
+    //It is more adapted to use with browserify. We still have to supply a preset.
+    .transform(babelify, { presets: ['latest'] })
+    //If we run in to some error it will log in the console instead of
+    //crashing with the 'gulp-util'-module
+    .on('error',gutil.log)
+    //With bundle() we say that we want to pack it all togehter
+    .bundle()
+    //Same here, if something goes wrong, log it instead of crashing. Always check the
+    //log, log lady.
+    .on('error',gutil.log)
+    //And convert everything to a single 'bundle.js' that we can link to in our
+    //index.html. (see script-tag in index.html)
+    .pipe(source('bundle.js'))
+    //As always we have to save it to
+    .pipe(gulp.dest('dist/js'));
 });
