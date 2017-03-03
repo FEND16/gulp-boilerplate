@@ -15,6 +15,7 @@ const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
 const browserSync = require('browser-sync').create();
 const autoprefixer = require('autoprefixer');
+const babel = require('gulp-babel');
 
 
 /*
@@ -22,7 +23,7 @@ const autoprefixer = require('autoprefixer');
  * will server our files. We are creating a 'localhost' so the page
  * can be automatically updated when we save our work.
  */
-gulp.task('default', ['sass'], () => {
+gulp.task('default', ['sass', 'babel'], () => {
     //Init the server, serv the content from our root: ./
     browserSync.init({
         server: {
@@ -37,6 +38,7 @@ gulp.task('default', ['sass'], () => {
 
     //When we update our files in ./src/scss, the 'sass'-task will automatically run
     gulp.watch('./src/scss/**/*.scss', ['sass']);
+    gulp.watch('./src/js/*.js', ['babel']);
 });
 
 /*
@@ -61,4 +63,25 @@ gulp.task('sass', () => {
         //our css and the browser should update. So we pass pipe our changes to
         //browser-sync that updates the browser.
         .pipe(browserSync.stream());
+});
+
+/*
+ * babel converts our ES6-code to ES5-code so we don't have to worry about
+ * compability issues. 'gulp-babel' is specific to gulp but does bascially the same
+ * thing. But we ALWAYS have to install and supply a 'preset' to babel or else
+ * it will not do anything. Here we have the preset 'babel-preset-latest' which 
+ * refers to ES6. We have to install this with npm but we don't have to import it
+ * at the top, we can supply only the preset name and babel will know where to look
+ * for the preset in node_modules.
+ */
+gulp.task('babel', () => {
+    //Grab all the files in ./src/js folder
+    return gulp.src('./src/js/*.js')
+        //Run them through babel with the preset supplied
+        .pipe(babel({
+            presets: ['latest']
+        }))
+        //Pipe to our destination which is the dist folder. You may have to
+        //create this folder manually or it will not work
+        .pipe(gulp.dest('dist/js'));
 });
