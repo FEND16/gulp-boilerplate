@@ -13,7 +13,7 @@ body {
       align-items: center;
   background-color: #cf4547;
   color: #fff;
-  font: 100%/1.5 sans-serif; }
+  font: 100%/1.5 'Source Sans Pro', sans-serif; }
 
 *, *:after, *:before {
   margin: 0;

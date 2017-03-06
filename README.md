@@ -1,31 +1,40 @@
-# Gulp Boilerplate with sass and autoprefixer
+# :zap: Gulp Boilerplate
+<img align="right" height="200px" width="auto" src="https://cdn.worldvectorlogo.com/logos/gulp.svg" alt="Gulp Logo">
 
-Use this command to install all dependencies
+_Gulp_ is a **Task Runner** that runs on _Node_. The "program" _Gulp_ is installed via the command line through `npm`, the node package manager and is run on the runtime environment _Node_. There is no GUI, everything is controlled by a config file and commands via the command line interface.
+
+_Gulp_ is a tool for automating common and time consuming task that we deal with every day when we develop. This repo is a starter kit with an already created config and folder structure.
+
+The **master** branch of this repo is able to automatically detect changes in your `html`-files and `scss`-files and updated your browser with these changes so you don't have to reload. This config will also automatically convert your `scss`-files to regular `css`-files so there is no need to use `sass` command in your ruby-command line (`gulp-sass` actually uses `node-sass` which is a port of the original ruby gem that we used earlier). The config will also autoprefix your `css`-files.
+
+## Instructions for the boilerplate
+
+* Clone the repository.
+
+* Use this command to install all dependencies for the project:
 
 ```bash
+# Uses package.json "devDependencies" to install dependencies
 npm install
 ```
 
-Then start `gulp` by running:
+* Start `gulp` by running:
 
-```
+```bash
 npm start
 ```
 
-or:
+* Write code in the `src`-folder.
 
-```
-gulp
-```
 
 ## Folder structure
 
 * `dist` - The converted files that are linked via `index.html`. You don't have to touch these files
-    - js - All converted `js`-files go here
-    - css - All converted `css`-files go here
+    - `js` - All converted `js`-files go here
+    - `css` - All converted `css`-files go here
 * `src` - This is where your development-files are. There are the ones you work on
-    - js - All unconverted `js`-files
-    - scss - All unconverted `scss`-files
+    - `js` - All unconverted `js`-files
+    - `scss` - All unconverted `scss`-files
 * `Gulpfile.js` - This config file must be in the root-folder
 * `index.html` - The index must be in the root-folder
 * `package.json` - All the dependencies and config for the project
