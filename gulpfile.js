@@ -15,7 +15,6 @@ const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
 const browserSync = require('browser-sync').create();
 const autoprefixer = require('autoprefixer');
-const babel = require('gulp-babel');
 const browserify = require('browserify');
 const babelify = require('babelify');
 const source = require('vinyl-source-stream');
@@ -84,7 +83,7 @@ gulp.task('babel', function() {
     })
     //Instead of gulp-babel we will runt babelify which is babel but for browserify
     //It is more adapted to use with browserify. We still have to supply a preset.
-    .transform(babelify, { presets: ['latest'] })
+    .transform(babelify, { presets: ['env'] })
     //If we run in to some error it will log in the console instead of
     //crashing with the 'gulp-util'-module
     .on('error',gutil.log)
