@@ -79,7 +79,7 @@ gulp.task('babel', () => {
     return gulp.src('./src/js/*.js')
         //Run them through babel with the preset supplied
         .pipe(babel({
-            presets: ['latest']
+            presets: ['env']
         }))
         //Pipe to our destination which is the dist folder. You may have to
         //create this folder manually or it will not work
